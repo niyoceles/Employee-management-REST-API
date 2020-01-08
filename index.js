@@ -4,6 +4,8 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import morgan from 'morgan';
 import router from './routes';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from './swagger.json';
 // express app
 const app = express();
 
@@ -19,6 +21,7 @@ app.use(
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(router);
 
 // Error handling to catch 404

@@ -1,11 +1,11 @@
 import express from 'express';
 
+import employees from './employeeRoute';
+import managers from './managerRoute';
+
 const router = express.Router();
 
-router.get('/app', (req, res) => {
-  return res.status(200).json({
-    message: 'app configured successful'
-  });
-});
+router.use('/employees', employees);
+router.use('/managers', managers);
 
 export default router;

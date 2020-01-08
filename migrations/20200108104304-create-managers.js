@@ -1,14 +1,14 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('employees', {
+    return queryInterface.createTable('managers', {
       id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4
       },
-      employeeNames: {
+      managerNames: {
         type: Sequelize.STRING,
         allowNull: false,
         required: true
@@ -21,6 +21,10 @@ module.exports = {
         validate: {
           isEmail: true
         }
+      },
+      password: {
+        type: Sequelize.STRING,
+        allowNull: false
       },
       position: {
         type: Sequelize.STRING,
@@ -48,6 +52,11 @@ module.exports = {
         allowNull: false,
         type: Sequelize.BOOLEAN
       },
+      isVerified: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -59,6 +68,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('employees');
+    return queryInterface.dropTable('managers');
   }
 };
