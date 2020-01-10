@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
-  const employees = sequelize.define(
-    'employees',
+  const managers = sequelize.define(
+    'managers',
     {
       id: {
         type: DataTypes.UUID,
@@ -9,7 +9,7 @@ export default (sequelize, DataTypes) => {
         primaryKey: true
       },
 
-      employeeNames: {
+      managerNames: {
         type: DataTypes.STRING,
         allowNull: false
       },
@@ -22,6 +22,10 @@ export default (sequelize, DataTypes) => {
         validate: {
           isEmail: true
         }
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false
       },
       position: {
         type: DataTypes.STRING,
@@ -44,12 +48,17 @@ export default (sequelize, DataTypes) => {
       status: {
         allowNull: false,
         type: DataTypes.BOOLEAN
+      },
+      isVerified: {
+        allowNull: false,
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
       }
     },
     {}
   );
-  employees.associate = models => {
+  managers.associate = models => {
     //any association
   };
-  return employees;
+  return managers;
 };

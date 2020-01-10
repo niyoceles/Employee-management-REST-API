@@ -1,0 +1,585 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Employee management system",
+    "version": "1.0.0",
+    "title": "Employee Management",
+    "contact": {
+      "email": "niyoceles3@gmail.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "employee-management-rest-api.herokuapp.com/",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "manager",
+      "description": "Operations about manager"
+    },
+    {
+      "name": "employee",
+      "description": "Operations on employee management"
+    }
+  ],
+  "schemes": ["https"],
+  "paths": {
+    "/managers": {
+      "post": {
+        "tags": ["manager"],
+        "summary": "manager can sign up to create an account",
+        "description": "",
+        "operationId": "managerSignup",
+        "consumes": ["application/json", "application/xml"],
+        "produces": ["application/xml", "application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "sign up",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/managerSigningUp"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User account Exist"
+          },
+          "201": {
+            "description": "sign up Successful"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Failed to sign up"
+          }
+        }
+      }
+    },
+    "/managers/signin": {
+      "post": {
+        "tags": ["manager"],
+        "summary": "Manager can signin with email and password",
+        "description": "",
+        "operationId": "managerSigning",
+        "consumes": ["application/json", "application/xml"],
+        "produces": ["application/xml", "application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "sign in",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/managerSignIn"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sign in successful"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "404": {
+            "description": "User does Not exist"
+          },
+          "500": {
+            "description": "Failed to sign in"
+          }
+        }
+      }
+    },
+    "/managers/send-email": {
+      "post": {
+        "tags": ["manager"],
+        "summary": "registered manager can send email link to reset password",
+        "description": "",
+        "operationId": "managerSendingEmail",
+        "consumes": ["application/json", "application/xml"],
+        "produces": ["application/xml", "application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "reset password",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/managerSendEmail"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Send email successful"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "404": {
+            "description": "Email does Not exist"
+          },
+          "500": {
+            "description": "Failed to sent an email reset password"
+          }
+        }
+      }
+    },
+    "/managers/reset/{token}": {
+      "post": {
+        "tags": ["manager"],
+        "summary": "Manager can reset his/her password",
+        "description": "Manager reset password",
+        "operationId": "managerResetp",
+        "produces": ["application/xml", "application/json"],
+        "consumes": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "Token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Reset password ",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/managerResetPassword"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Password successful reset"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "No authorized"
+          },
+          "500": {
+            "description": "Failed to reset password"
+          }
+        }
+      }
+    },
+    "/managers/signout": {
+      "post": {
+        "tags": ["manager"],
+        "summary": "Manager can sign out",
+        "description": "Manager user signout",
+        "operationId": "managerSignout",
+        "produces": ["application/xml", "application/json"],
+        "consumes": ["application/json", "application/xml"],
+        "responses": {
+          "200": {
+            "description": "Successful signed out"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "No authorized is required"
+          },
+          "500": {
+            "description": "Failed to sign out"
+          }
+        },
+        "security": [
+          {
+            "userJWT": []
+          }
+        ]
+      }
+    },
+    "/employees": {
+      "post": {
+        "tags": ["employee"],
+        "summary": "manager can create an employee account",
+        "description": "",
+        "operationId": "createEmpl",
+        "consumes": ["application/json", "application/xml"],
+        "produces": ["application/xml", "application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "create employee",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createEmplyee"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User Exist"
+          },
+          "201": {
+            "description": "Successful Created"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Failed to create an employee"
+          }
+        },
+        "security": [
+          {
+            "userJWT": []
+          }
+        ]
+      }
+    },
+    "/employees/{id}": {
+      "put": {
+        "tags": ["employee"],
+        "summary": "manager can edit an employee account",
+        "description": "Manager should be able to edit an employee with authentication",
+        "operationId": "editEmployee",
+        "consumes": ["application/json", "application/xml"],
+        "produces": ["application/xml", "application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of an employee",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Editing an employee",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/editingEmployee"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful edited"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Failed to edit an employee"
+          }
+        },
+        "security": [
+          {
+            "userJWT": []
+          }
+        ]
+      }
+    },
+    "/employees/{employeeId}/activate": {
+      "put": {
+        "tags": ["employee"],
+        "summary": "Manager can active employee account",
+        "description": "Return message",
+        "operationId": "activateEmply",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "employeeId",
+            "in": "path",
+            "description": "activate an employee",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "employee activated successful"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Not logged in"
+          },
+          "500": {
+            "description": "Failed to activate employee"
+          }
+        },
+        "security": [
+          {
+            "userJWT": []
+          }
+        ]
+      }
+    },
+    "/employees/{employeeId}/suspend": {
+      "put": {
+        "tags": ["employee"],
+        "summary": "manager can suspend an employee",
+        "description": "Return message",
+        "operationId": "suspendEmply",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "employeeId",
+            "in": "path",
+            "description": "suspend an employee",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "employee suspend successful"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Not logged in"
+          },
+          "500": {
+            "description": "Failed to suspend employee"
+          }
+        },
+        "security": [
+          {
+            "userJWT": []
+          }
+        ]
+      }
+    },
+    "/employees/{employeeId}/delete": {
+      "delete": {
+        "tags": ["employee"],
+        "summary": "Manager can delete an employee",
+        "description": "Return message",
+        "operationId": "deleteEmply",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "employeeId",
+            "in": "path",
+            "description": "delete an employee",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "employee delete successful"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Not logged in"
+          },
+          "500": {
+            "description": "Failed to delete employee"
+          }
+        },
+        "security": [
+          {
+            "userJWT": []
+          }
+        ]
+      }
+    },
+    "/employees/search": {
+      "post": {
+        "tags": ["employee"],
+        "summary": "manager can search an employee ",
+        "description": "",
+        "operationId": "searchEmployee",
+        "consumes": ["application/json", "application/xml"],
+        "produces": ["application/xml", "application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "search an employee",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/searchAnEmployee"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful result search"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Not logged in"
+          },
+          "500": {
+            "description": "Failed to search employee"
+          }
+        },
+        "security": [
+          {
+            "userJWT": []
+          }
+        ]
+      }
+    }
+  },
+
+  "securityDefinitions": {
+    "userJWT": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "managerSendEmail": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "manager"
+      }
+    },
+    "managerSigningUp": {
+      "type": "object",
+      "properties": {
+        "managerNames": {
+          "type": "string"
+        },
+        "phoneNumber": {
+          "type": "string"
+        },
+        "nationalId": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "birthDate": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "manager"
+      }
+    },
+    "managerSignIn": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "manager"
+      }
+    },
+    "managerResetPassword": {
+      "type": "object",
+      "properties": {
+        "password": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "manager"
+      }
+    },
+    "createEmplyee": {
+      "type": "object",
+      "properties": {
+        "employeeNames": {
+          "type": "string"
+        },
+        "phoneNumber": {
+          "type": "string"
+        },
+        "nationalId": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "birthDate": {
+          "type": "string"
+        },
+        "position": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "employee"
+      }
+    },
+    "editingEmployee": {
+      "type": "object",
+      "properties": {
+        "employeeNames": {
+          "type": "string"
+        },
+        "phoneNumber": {
+          "type": "string"
+        },
+        "nationalId": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "birthDate": {
+          "type": "string"
+        },
+        "position": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "employee"
+      }
+    },
+    "searchAnEmployee": {
+      "type": "object",
+      "properties": {
+        "search": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "employee"
+      }
+    }
+  }
+}
